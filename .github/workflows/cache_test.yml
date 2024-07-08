@@ -1,0 +1,32 @@
+name: CI
+on: workflow_dispatch
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    steps:
+      
+    - name: set up JDK 17
+      uses: actions/setup-java@v4.2.1
+      with:
+        java-version: 17
+        distribution: microsoft
+        
+    - name: set up scons
+      run: pip3 install scons
+      
+    - name: clone repo
+      run: |
+        mkdir -p /home/runner/work/tmp
+        cd /home/runner/work/tmp
+        git clone --depth 1 https://github.com/godotengine/godot.git
+
+    - name: scons build
+      run: |
+        cd /home/runner/work/tmp/godot
+        scons platform=android arch=arm64 production=yes target=editor generate_apk=yes
+
+    - uses: actions/upload-artifact@v4
+      with:
+        name: apk upload
+        path: /home/runner/work/tmp/godot/bin/*
