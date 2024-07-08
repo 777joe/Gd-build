@@ -24,7 +24,7 @@ jobs:
     - name: scons build
       run: |
         cd /home/runner/work/tmp/godot
-        scons platform=android arch=arm64 production=yes target=editor generate_apk=yes
+        scons platform=android arch=arm64 production=no target=editor generate_apk=yes
 
     - uses: actions/upload-artifact@v4
       with:
