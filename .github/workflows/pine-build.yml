@@ -1,0 +1,29 @@
+name: pine-build
+on:  workflow_dispatch
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    steps:
+      
+    - name: set up JDK 17
+      uses: actions/setup-java@v4.2.1
+      with:
+        java-version: 17
+        distribution: microsoft
+      
+    - name: clone repo
+      run: |
+        mkdir -p /home/runner/work/tmp
+        cd /home/runner/work/tmp
+        git clone --recursive --depth 1 https://github.com/Ishan09811/pine.git
+
+    - name: gradle build
+      run: |
+        cd /home/runner/work/tmp/pine
+        
+
+    - uses: actions/upload-artifact@v4
+      with:
+        name: apk upload
+        path: /home/runner/work/tmp/pine/bin/*
